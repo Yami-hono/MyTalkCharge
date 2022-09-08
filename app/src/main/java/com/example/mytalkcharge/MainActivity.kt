@@ -7,14 +7,15 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.mytalkcharge.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
-import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         hourlyUpdateAdapter= HourlyWeatherListAdapter()
-
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.hourlyList.adapter=hourlyUpdateAdapter
 
@@ -49,12 +49,12 @@ class MainActivity : AppCompatActivity() {
             viewModel.getWeather(state)
         }
 
+        binding.swipeLayout.setOnChildScrollUpCallback { parent, child -> binding.scrollable.getScrollY() > 10 }
 
-
-
-        binding.hourlyCard.alpha=0.5f
-        binding.dailyCard.alpha=0.5f
-        binding.details.alpha=0.5f
+//        binding.hourlyCard.alpha=0.5f
+//        binding.dailyCard.alpha=0.5f
+//        binding.details.alpha=0.5f
+        binding.motionView1.transitionToStart()
         addObserver()
         trackRecordRoomState()
     }
@@ -92,59 +92,68 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.currData.observe(this){
-            Log.i("currdataUPdate", "addObserver: currDAta UPdate")
-            binding.swipeLayout.isRefreshing = false
-            binding.currTemp.text= (it.main.temp-273).toString()+"°C"
+
+            binding.apply {
+                tempMax.text=String.format("%.2f", (it.main.temp_max-273))+"°C"
+                tempMin.text=String.format("%.2f", (it.main.temp_min-273))+"°C"
+                swipeLayout.isRefreshing = false
+
+                currTemp.text=String.format("%.2f", (it.main.temp-273))
+            }
+
         }
 
         viewModel.responseData.observe(this){
             binding.apply {
-//                town.text = it.city.name
+                town.text = it.city.name
                 sunRise.text=SimpleDateFormat("hh:mm a").format(it.city.sunrise*1000).toString()
                 sunSet.text=SimpleDateFormat("hh:mm a").format(it.city.sunset*1000).toString()
                 Log.i("epochTotime", "addObserver: ${it.city.sunset}")
+                weatherDesc.text=it.list[0].weather[0].main
                 windTxt.text = it.list[0].wind.speed.toString()+"km/h"
-                visibilityTxt.text=it.list[0].visibility.toString()+ "km"
+                visibilityTxt.text=(it.list[0].visibility/1000).toString()+ "km"
                 pressureText.text=it.list[0].main.pressure.toString()+"hPa"
             }
         }
     }
 
     private fun trackRecordRoomState() {
-//        binding.motionView.addTransitionListener(object : MotionLayout.TransitionListener{
-//            override fun onTransitionStarted(
-//                motionLayout: MotionLayout?,
-//                startId: Int,
-//                endId: Int
-//            ) {
-//            }
-//
-//            override fun onTransitionChange(
-//                motionLayout: MotionLayout?,
-//                startId: Int,
-//                endId: Int,
-//                progress: Float
-//            ) {
-//            }
-//
-//            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
-//                if (currentId == R.id.end){
-//                    Log.i("motionRoomState", "onTransitionCompleted: end")
-////                    viewModel.lvRoomState.value = LiveRoomState.COLLAPSED
-//                } else {
-//                    Log.i("motionRoomState", "onTransitionCompleted: start ")
-////                    viewModel.lvRoomState.value = LiveRoomState.EXPANDED
-//                }
-//            }
-//
-//            override fun onTransitionTrigger(
-//                motionLayout: MotionLayout?,
-//                triggerId: Int,
-//                positive: Boolean,
-//                progress: Float
-//            ) {
-//            }
-//
-//        })
+        Log.i("motionRoomState", "trackRecordRoomState: ")
+        binding.motionView1.addTransitionListener(object : MotionLayout.TransitionListener{
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+                Log.i("motionRoomState", "onTransitionStarted: $startId-- $endId")
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+                Log.i("motionRoomState", "onTransitionChange:Started :$startId --- $endId ")
+            }
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                if (currentId == R.id.end){
+                    Log.i("motionRoomState", "onTransitionCompleted: end")
+                } else {
+                    Log.i("motionRoomState", "onTransitionCompleted: start ")
+                }
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+                Log.i("motionRoomState", "onTransitionTrigger: ")
+            }
+
+        })
     }
 }

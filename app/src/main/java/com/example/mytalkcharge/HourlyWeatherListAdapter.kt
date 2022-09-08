@@ -21,7 +21,7 @@ class HourlyWeatherListAdapter: RecyclerView.Adapter<HourlyWeatherListAdapter.Us
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Sky) {
             with(binding) {
-                time.text= SimpleDateFormat("hh:mm a").format(item.dt*1000).toString()
+                time.text= SimpleDateFormat("ha").format(item.dt*1000).toString()
                 val tempC=item.main.temp-273
                 if(item.weather[0].description.contains("clouds"))
                     skyStatus.setBackgroundResource(R.drawable.ic_cloud)

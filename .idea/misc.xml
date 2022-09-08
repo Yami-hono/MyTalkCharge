@@ -3,11 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/drawable-v24/view_card_background.xml" value="0.1345" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/drawable/ic_arrow_downward.xml" value="0.1" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/drawable/ic_arrow_upward.xml" value="0.1345" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/drawable/ic_cloud.xml" value="0.1345" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/drawable/ic_sunny.xml" value="0.1345" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/layout/li_hourly_update.xml" value="0.4921875" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MyTalkCharge/app/src/main/res/layout/li_hourly_update.xml" value="0.264" />
       </map>
     </option>
   </component>

@@ -34,7 +34,7 @@ data class Wind(
 data class Main(
     val feels_like: Double,
     val humidity: Int,
-    val pressure: Int,
+    val pressure: Float,
     val temp: Double,
     val temp_max: Double,
     val temp_min: Double
