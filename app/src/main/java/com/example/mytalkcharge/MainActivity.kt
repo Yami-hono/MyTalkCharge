@@ -32,7 +32,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private lateinit var hourlyUpdateAdapter:HourlyWeatherListAdapter
+    private lateinit var dailyWeatherListAdapter: DailyWeatherListAdapter
     var state=""
+    var city=""
 
 
     lateinit var binding: ActivityMainBinding
@@ -41,8 +43,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         hourlyUpdateAdapter= HourlyWeatherListAdapter()
+        dailyWeatherListAdapter= DailyWeatherListAdapter()
         binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.hourlyList.adapter=hourlyUpdateAdapter
+        binding.dailyList.adapter=dailyWeatherListAdapter
         fusedLocationProviderClient=LocationServices.getFusedLocationProviderClient(this)
 
         checkLocationPermission()
@@ -78,12 +82,12 @@ class MainActivity : AppCompatActivity() {
         task.addOnSuccessListener {
             val geocoder = Geocoder(this, Locale.getDefault())
             val addresses: List<Address> = geocoder.getFromLocation(it.latitude, it.longitude, 1)
-//            val address: String = addresses[0].getAddressLine(0)
-//            val city: String = addresses[0].getLocality()
+            val address: String = addresses[0].getAddressLine(0)
+             city = addresses[0].getLocality()
              state = addresses[0].getAdminArea()
-//            val zip: String = addresses[0].getPostalCode()
+            val zip: String = addresses[0].getPostalCode()
             viewModel.getWeather(state)
-//            val country: String = addresses[0].getCountryName()
+            val country: String = addresses[0].getCountryName()
 
         }
     }
@@ -97,6 +101,11 @@ class MainActivity : AppCompatActivity() {
             if(it.isNotEmpty()){
                 hourlyUpdateAdapter.setUpdatedList(it)
             }
+        }
+
+        viewModel.dailyList.observe(this){
+            if(it.isNotEmpty())
+                dailyWeatherListAdapter.setUpdatedList(it)
         }
 
         viewModel.apiResponseStatus.observe(this){
@@ -118,13 +127,16 @@ class MainActivity : AppCompatActivity() {
                 tempMax.text=String.format("%.2f", (it.main.temp_max-273))+"°C"
                 tempMin.text=String.format("%.2f", (it.main.temp_min-273))+"°C"
                 swipeLayout.isRefreshing = false
+                humText.text= it.main.humidity.toString()+"%"
+                precipitationTxt.text=it.wind.deg.toString()+"°"
                 currTemp.text=String.format("%.2f", (it.main.temp-273))
             }
         }
 
         viewModel.responseData.observe(this){
             binding.apply {
-                town.text = it.city.name
+                town.text = city
+                uvTxt.text= it.list[0].main.sea_level.toString()+"m"
                 sunRise.text=SimpleDateFormat("hh:mm a").format(it.city.sunrise*1000).toString()
                 sunSet.text=SimpleDateFormat("hh:mm a").format(it.city.sunset*1000).toString()
                 weatherDesc.text=it.list[0].weather[0].main

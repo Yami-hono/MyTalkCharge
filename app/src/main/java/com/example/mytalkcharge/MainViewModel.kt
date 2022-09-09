@@ -1,6 +1,7 @@
 package com.example.mytalkcharge
 
 import android.os.Message
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,7 @@ class MainViewModel:ViewModel() {
     val apiResponseStatus=MutableLiveData<Message>()
 
     val hourlyList= MutableLiveData<ArrayList<Sky>>()
+    val dailyList= MutableLiveData<ArrayList<Sky>>()
     var responseData=MutableLiveData<WeatherResponse>()
     var currData=MutableLiveData<TownWeather>()
 
@@ -50,12 +52,14 @@ class MainViewModel:ViewModel() {
         val msg=Message()
         viewModelScope.launch {
             try {
-                val res=retrofitInstance.getWeatherInfo(id,apikey)
+                val res=retrofitInstance.getWeatherInfo(id,40,apikey)
                 if(res.isSuccessful){
                     msg.what= SUCCESS
                     apiResponseStatus.value= msg
                     res.body()?.let {
+                        Log.i("dailyLsit", "getWeather: ${it.list.size}")
                         hourlyList.value=it.list
+                        dailyList.value=it.list
                         responseData.value= it
                     }
 

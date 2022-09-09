@@ -3,10 +3,11 @@
     <string name="humidity">Humidity</string>
     <string name="celsius">°C</string>
     <string name="hourly_forecast">Hourly Forecast</string>
+    <string name="daily_forecast">Daily Forecast</string>
     <string name="sunrise_amp_sunset"><![CDATA[SUNRISE & SUNSET]]></string>
     <string name="details">Details</string>
-    <string name="precipitation">Precipitation</string>
-    <string name="uv">UV</string>
+    <string name="precipitation">Wind Direction</string>
+    <string name="uv">Sea Level</string>
     <string name="wind">East Wind</string>
     <string name="visibility">Visibility</string>
     <string name="pressure">Pressure</string>

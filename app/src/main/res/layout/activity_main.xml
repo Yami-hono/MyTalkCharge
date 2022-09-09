@@ -146,13 +146,49 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/dailyCard"
                     android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/view_card_background"
+                    android:padding="15dp"
+                    app:layout_constraintEnd_toEndOf="@id/weatherDesc"
+                    app:layout_constraintStart_toStartOf="@id/weatherDesc"
+                    app:layout_constraintTop_toBottomOf="@id/hourlyCard">
+
+                    <TextView
+                        android:id="@+id/dailyText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/daily_forecast"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/dailyList"
+                        android:layout_width="0dp"
+                        android:layout_height="220dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="@+id/dailyText"
+                        app:layout_constraintTop_toBottomOf="@+id/dailyText"
+                        tools:listitem="@layout/li_daily_update" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/sunCard"
+                    android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/view_card_background"
                     android:layout_marginTop="10dp"
                     android:padding="15dp"
                     app:layout_constraintStart_toStartOf="@+id/hourlyCard"
-                    app:layout_constraintTop_toBottomOf="@+id/hourlyCard">
+                    app:layout_constraintTop_toBottomOf="@+id/dailyCard">
 
                     <TextView
                         android:id="@+id/sunRiseSet"
@@ -206,7 +242,7 @@
                     android:padding="15dp"
                     app:layout_constraintStart_toStartOf="@id/hourlyCard"
                     app:layout_constraintEnd_toEndOf="@id/hourlyCard"
-                    app:layout_constraintTop_toBottomOf="@+id/dailyCard">
+                    app:layout_constraintTop_toBottomOf="@+id/sunCard">
 
                     <TextView
                         android:id="@+id/detailText"
@@ -235,7 +271,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        tools:text="0.0mm"
+                        android:text="0.0mm"
                         android:textStyle="bold"
                         android:textColor="@color/white"
                         android:textSize="22sp"
@@ -286,7 +322,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        tools:text="54%"
+                        tools:text="54"
                         android:textColor="@color/white"
                         android:textStyle="bold"
                         android:textSize="22sp"
