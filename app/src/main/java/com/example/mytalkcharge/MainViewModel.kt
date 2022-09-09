@@ -57,7 +57,6 @@ class MainViewModel:ViewModel() {
                     msg.what= SUCCESS
                     apiResponseStatus.value= msg
                     res.body()?.let {
-                        Log.i("dailyLsit", "getWeather: ${it.list.size}")
                         hourlyList.value=it.list
                         dailyList.value=it.list
                         responseData.value= it

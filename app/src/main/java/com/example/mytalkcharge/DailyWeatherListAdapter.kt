@@ -15,17 +15,14 @@ class DailyWeatherListAdapter: RecyclerView.Adapter<DailyWeatherListAdapter.User
     var data=ArrayList<Sky>()
     fun setUpdatedList(data:ArrayList<Sky>){
         var dailyList=ArrayList<Sky>()
-        Log.i("dailyLsit", "setUpdatedList: sourceList size ${data.size}")
         var dayVal:Long=0
         for(i in data){
             if(i.dt/100000!=dayVal){
-                Log.i("dailyLsit", "setUpdatedList: $dayVal")
                 dailyList.add(i)
                 dayVal=i.dt/100000
             }
         }
 
-        Log.i("dailyLsit", "setUpdatedList: ${dailyList.size}")
         this.data=data
         this.data= dailyList
         notifyDataSetChanged()
@@ -38,7 +35,6 @@ class DailyWeatherListAdapter: RecyclerView.Adapter<DailyWeatherListAdapter.User
                 val sdf = java.text.SimpleDateFormat("dd/MM/yyyy'T'HH:mm:ss'Z'")
                 val date = java.util.Date(item.dt * 1000)
                 sdf.format(date)
-                Log.i("EpochData", "bind: ${sdf.format(date)}")
 //                time.text= SimpleDateFormat("dd/mm/yyyy").format(item.dt)
                 time.text=sdf.format(date).substring(0,10)
                 day.text=date.toString().substring(0,4)
