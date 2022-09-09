@@ -1,6 +1,5 @@
 package com.example.mytalkcharge
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -27,7 +26,6 @@ class HourlyWeatherListAdapter: RecyclerView.Adapter<HourlyWeatherListAdapter.Us
                     skyStatus.setBackgroundResource(R.drawable.ic_cloud)
                 else
                     skyStatus.setBackgroundResource(R.drawable.ic_sunny)
-                Log.i("adapterHourly", "bind: tempC:$tempC &&-   ${item.main.temp}")
                 temp.text=(tempC).toInt().toString()+"°C"
             }
         }

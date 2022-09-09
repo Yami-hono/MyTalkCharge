@@ -1,5 +1,6 @@
 package com.example.mytalkcharge
 
+import android.os.Message
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,8 +12,9 @@ import kotlinx.coroutines.launch
 
 class MainViewModel:ViewModel() {
 
-    val retrofitInstance= RetrofitInstance.getRetrofitInstance().create(NetworkService::class.java)
+    private val retrofitInstance= RetrofitInstance.getRetrofitInstance().create(NetworkService::class.java)
     val apikey="c3528ccdd115c63801af22bc093f916c"
+    val apiResponseStatus=MutableLiveData<Message>()
 
     val hourlyList= MutableLiveData<ArrayList<Sky>>()
     var responseData=MutableLiveData<WeatherResponse>()
@@ -20,28 +22,38 @@ class MainViewModel:ViewModel() {
 
 
     fun getWeather(state: String) {
+        val msg=Message()
         viewModelScope.launch {
             try {
                 val res=retrofitInstance.getWeatherInfo(state,apikey)
                 if(res.isSuccessful){
+                    msg.what= SUCCESS
+                    apiResponseStatus.value= msg
                     currData.value=res.body()
                     res.body()?.id?.let {
                         getWeather(it) }
                 }
                 else{
+                    msg.what= FAILED
+                    apiResponseStatus.value= msg
 
                 }
             }catch (ex:Exception){
+                msg.what= EXCEPTION
+                apiResponseStatus.value= msg
 
             }
         }
     }
 
     fun getWeather(id:Int) {
+        val msg=Message()
         viewModelScope.launch {
             try {
                 val res=retrofitInstance.getWeatherInfo(id,apikey)
                 if(res.isSuccessful){
+                    msg.what= SUCCESS
+                    apiResponseStatus.value= msg
                     res.body()?.let {
                         hourlyList.value=it.list
                         responseData.value= it
@@ -49,9 +61,14 @@ class MainViewModel:ViewModel() {
 
                 }
                 else{
-
+                    msg.what= FAILED
+                    apiResponseStatus.value= msg
+                    hourlyList.value= arrayListOf()
                 }
             }catch (ex:Exception){
+                msg.what= EXCEPTION
+                apiResponseStatus.value= msg
+                hourlyList.value= arrayListOf()
 
             }
         }

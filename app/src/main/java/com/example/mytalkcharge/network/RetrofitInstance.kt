@@ -6,13 +6,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitInstance {
 
     companion object{
-        val baseUrl="https://api.openweathermap.org/data/2.5/"
-
-
-//        api.openweathermap.org/data/2.5/forecast/daily
+        const val baseUrl="https://api.openweathermap.org/data/2.5/"
 
         fun getRetrofitInstance():Retrofit {
-
             return Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())

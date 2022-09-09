@@ -9,6 +9,7 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.app.ActivityCompat
@@ -77,20 +78,38 @@ class MainActivity : AppCompatActivity() {
         task.addOnSuccessListener {
             val geocoder = Geocoder(this, Locale.getDefault())
             val addresses: List<Address> = geocoder.getFromLocation(it.latitude, it.longitude, 1)
-            val address: String = addresses[0].getAddressLine(0)
-            val city: String = addresses[0].getLocality()
+//            val address: String = addresses[0].getAddressLine(0)
+//            val city: String = addresses[0].getLocality()
              state = addresses[0].getAdminArea()
-            val zip: String = addresses[0].getPostalCode()
+//            val zip: String = addresses[0].getPostalCode()
             viewModel.getWeather(state)
-            val country: String = addresses[0].getCountryName()
+//            val country: String = addresses[0].getCountryName()
 
         }
+    }
+
+    private fun showToast(text:String){
+        Toast.makeText(this,text,Toast.LENGTH_LONG).show()
     }
 
     fun addObserver(){
         viewModel.hourlyList.observe(this){
             if(it.isNotEmpty()){
                 hourlyUpdateAdapter.setUpdatedList(it)
+            }
+        }
+
+        viewModel.apiResponseStatus.observe(this){
+            when(it.what){
+                 SUCCESS -> {
+                     showToast("Refreshed")
+                 }
+                FAILED -> {
+                    showToast("Failed! Try Again")
+                }
+                EXCEPTION -> {
+                    showToast("Oops! Something Went Wrong")
+                }
             }
         }
 
