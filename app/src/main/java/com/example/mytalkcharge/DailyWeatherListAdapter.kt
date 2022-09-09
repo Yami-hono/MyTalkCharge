@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mytalkcharge.databinding.LiDailyUpdateBinding
 import com.example.mytalkcharge.repository.Sky
+import java.sql.Date
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
@@ -34,8 +35,13 @@ class DailyWeatherListAdapter: RecyclerView.Adapter<DailyWeatherListAdapter.User
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Sky) {
             with(binding) {
-//                time.text= SimpleDateFormat("d/m").format(item.dt_txt.substring(0,5))
-                time.text=item.dt_txt.substring(5,10)
+                val sdf = java.text.SimpleDateFormat("dd/MM/yyyy'T'HH:mm:ss'Z'")
+                val date = java.util.Date(item.dt * 1000)
+                sdf.format(date)
+                Log.i("EpochData", "bind: ${sdf.format(date)}")
+//                time.text= SimpleDateFormat("dd/mm/yyyy").format(item.dt)
+                time.text=sdf.format(date).substring(0,10)
+                day.text=date.toString().substring(0,4)
                 val tempC=item.main.temp-273
                 if(item.weather[0].description.contains("clouds"))
                     skyStatus.setBackgroundResource(R.drawable.ic_cloud)
